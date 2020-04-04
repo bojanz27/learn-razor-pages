@@ -1,0 +1,70 @@
+﻿@page "/Words/{handler?}/{lang?}"
+@model GermanVocabulary.Pages.VocabularyModel
+
+<div class="add-word-widget">
+    <h3>Add new word</h3>
+    <form asp-page-handler="AddWord" method="post">
+        <div class="row">
+            <div class="col col-md-2">
+                <input asp-for="@Model.AddWordDTO.German" type="text" class="form-control" placeholder="german" />
+                <span asp-validation-for="@Model.AddWordDTO.German" class="text text-danger"></span>
+            </div>
+            <div class="col col-md-2">
+                <input asp-for="@Model.AddWordDTO.Serbian" type="text" class="form-control" placeholder="translation" />
+                <span asp-validation-for="@Model.AddWordDTO.Serbian" class="text text-danger"> </span>
+            </div>
+            <div class="col">
+                <button type="submit" class="btn btn-primary"> Add </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="words-table">
+    <h3>Dictionary</h3>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">German</th>
+                <th scope="col">Serbian</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <form asp-page-handler="Filter" asp-route-lang="g" method="get">
+                        <div class="input-group">
+                            <input asp-for="@Model.FilterDTO.Word" class="form-control" type="text" placeholder="search german word" />
+                            <div class="input-group-btn">
+                                <input class="btn" type="image" src="~/images/search.svg" alt="Search" />
+                            </div>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form asp-page-handler="Filter" asp-route-lang="s" method="get">
+                        <div class="input-group">
+                            <input asp-for="@Model.FilterDTO.Word" class="form-control" type="text" placeholder="search serbian word" />
+                            <div class="input-group-btn">
+                                <input class="btn" type="image" src="~/images/search.svg" alt="Search" />
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            @foreach (var word in Model.Words)
+            {
+                <tr>
+                    <td>@word.German</td>
+                    <td>@word.Serbian</td>
+                    <td>
+                        <form class="form-inline" asp-page-handler="Delete" asp-route-id="@word.Id" method="post">
+                            <input type="image" src="~/images/delete.svg" alt="Delete" />
+                        </form>
+                    </td>
+                </tr>
+            }
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
